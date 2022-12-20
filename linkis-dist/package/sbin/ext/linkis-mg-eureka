@@ -46,7 +46,7 @@ fi
 #fi
 if [[ -e "$PINPOINT_AGENT_PATH" && -e $PINPOINT_AGENT_PATH ]]; then
   HOST_NAME="`hostname --fqdn`"
-  PP_AGENT_ID="${HOST_NAME##*-}-${SERVER_NAME#*-}"
+  PP_AGENT_ID="${HOST_NAME##*-}-${SERVER_NAME##*-}"
   export JAVA_AGENT_OPTS="-javaagent:$PINPOINT_AGENT_PATH -Dpinpoint.agentId=$PP_AGENT_ID -Dpinpoint.applicationName=$PP_APPLICATION_NAME"
 fi
 ## modify by jiangkun0928 for change skywalking -> pinpoint end
