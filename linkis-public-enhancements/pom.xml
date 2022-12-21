@@ -70,7 +70,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.linkis</groupId>
-      <artifactId>linkis-bmlserver</artifactId>
+      <artifactId>linkis-bml-server</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

@@ -290,6 +290,63 @@
         </dependencySet>
     </dependencySets>
 
+    <fileSets>
+        <fileSet>
+            <directory>${basedir}/linkis-datasource/linkis-metadata-query/server/target/out/lib/service/elasticsearch</directory>
+            <fileMode>0755</fileMode>
+            <outputDirectory>lib/metadataquery-service/elasticsearch</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-javadoc.jar</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/linkis-datasource/linkis-metadata-query/server/target/out/lib/service/hdfs</directory>
+            <fileMode>0755</fileMode>
+            <outputDirectory>lib/metadataquery-service/hdfs</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-javadoc.jar</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/linkis-datasource/linkis-metadata-query/server/target/out/lib/service/hive</directory>
+            <fileMode>0755</fileMode>
+            <outputDirectory>lib/metadataquery-service/hive</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-javadoc.jar</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/linkis-datasource/linkis-metadata-query/server/target/out/lib/service/jdbc</directory>
+            <fileMode>0755</fileMode>
+            <outputDirectory>lib/metadataquery-service/jdbc</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-javadoc.jar</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/linkis-datasource/linkis-metadata-query/server/target/out/lib/service/kafka</directory>
+            <fileMode>0755</fileMode>
+            <outputDirectory>lib/metadataquery-service/kafka</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-javadoc.jar</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
 
 </assembly>
 

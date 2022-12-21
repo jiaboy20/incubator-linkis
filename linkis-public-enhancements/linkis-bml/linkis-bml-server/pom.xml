@@ -24,7 +24,7 @@
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>linkis-bmlserver</artifactId>
+  <artifactId>linkis-bml-server</artifactId>
 
   <dependencies>
     <dependency>
