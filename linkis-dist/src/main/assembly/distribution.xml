@@ -102,7 +102,6 @@
             <outputDirectory></outputDirectory>
             <includes>
                 <include>README*</include>
-                <include>DISCLAIMER*</include>
             </includes>
         </fileSet>
 
@@ -176,6 +175,39 @@
         <fileSet>
             <directory>
                 ../linkis-engineconn-plugins/pipeline/target/out/
+            </directory>
+            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!--io_file -->
+        <fileSet>
+            <directory>
+                ../linkis-engineconn-plugins/io_file/target/out/
+            </directory>
+            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!-- sqoop -->
+        <fileSet>
+            <directory>
+                ../linkis-engineconn-plugins/sqoop/target/out/
+            </directory>
+            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!--seatunnel -->
+        <fileSet>
+            <directory>
+                ../linkis-engineconn-plugins/seatunnel/target/out/
             </directory>
             <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
             <includes>
