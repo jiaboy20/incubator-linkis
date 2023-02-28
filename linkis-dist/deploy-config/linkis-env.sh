@@ -72,10 +72,12 @@ YARN_RESTFUL_URL="http://bigd-cdh-a-dev-03:8088/"
 #         You can also set these variables as system environment in ~/.bashrc file
 
 #HADOOP
-HADOOP_HOME=/opt/cloudera/parcels/CDH/lib/hadoop
-HADOOP_CONF_DIR=/etc/hadoop/conf
-#HADOOP_KERBEROS_ENABLE=true
-#HADOOP_KEYTAB_PATH=/appcom/keytab/
+HADOOP_HOME=${HADOOP_HOME:-"/opt/cloudera/parcels/CDH/lib/hadoop"}
+HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-"/etc/hadoop/conf"}
+HADOOP_KERBEROS_ENABLE=${HADOOP_KERBEROS_ENABLE:-"false"}
+HADOOP_KEYTAB_PATH=${HADOOP_KEYTAB_PATH:-"/appcom/keytab/"}
+## Hadoop env version
+HADOOP_VERSION=${HADOOP_VERSION:-"3.0.0"}
 
 #Hive
 HIVE_HOME=/opt/cloudera/parcels/CDH/lib/hive
@@ -95,9 +97,6 @@ HIVE_VERSION=2.1.1
 
 #PYTHON_VERSION=python2
 
-## Hadoop env version
-HADOOP_VERSION=3.0.0
-
 ################### The install Configuration of all Micro-Services #####################
 #
 #    NOTICE:
@@ -113,26 +112,32 @@ HADOOP_VERSION=3.0.0
 #EUREKA_INSTALL_IP=127.0.0.1
 EUREKA_PORT=8761
 export EUREKA_PREFER_IP=false
+#EUREKA_HEAP_SIZE="512M"
 
 ##linkis-mg-gateway
 #GATEWAY_INSTALL_IP=127.0.0.1
 GATEWAY_PORT=9111
+#GATEWAY_HEAP_SIZE="512M"
 
 ##linkis-cg-linkismanager
 #MANAGER_INSTALL_IP=127.0.0.1
 MANAGER_PORT=9101
+#MANAGER_HEAP_SIZE="512M"
 
 ##linkis-cg-engineconnmanager
 #ENGINECONNMANAGER_INSTALL_IP=127.0.0.1
 ENGINECONNMANAGER_PORT=9102
+#ENGINECONNMANAGER_HEAP_SIZE="512M"
 
 ##linkis-cg-entrance
 #ENTRANCE_INSTALL_IP=127.0.0.1
 ENTRANCE_PORT=9104
+#ENTRANCE_HEAP_SIZE="512M"
 
 ##linkis-ps-publicservice
 #PUBLICSERVICE_INSTALL_IP=127.0.0.1
 PUBLICSERVICE_PORT=9105
+#PUBLICSERVICE_HEAP_SIZE="512M"
 
 ########################################################################################
 
