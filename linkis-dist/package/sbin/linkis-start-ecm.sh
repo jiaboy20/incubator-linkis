@@ -59,32 +59,38 @@ isSuccess "start $SERVER_NAME"
 echo "<-------------------------------->"
 sleep 3
 }
-#
-#
-##linkis-mg-eureka
+
+echo "<-------------------------------->"
+echo "Linkis manager data is being cleared"
+sh $LINKIS_HOME/sbin/clear-server.sh
+
+#linkis-mg-eureka
 #export SERVER_NAME="mg-eureka"
 #SERVER_IP=$EUREKA_INSTALL_IP
 #startApp
-#
-#
-##linkis-mg-gateway
+
+#linkis-mg-gateway
 #SERVER_NAME="mg-gateway"
 #SERVER_IP=$GATEWAY_INSTALL_IP
 #startApp
-#
-##linkis-ps-publicservice
+
+#linkis-ps-publicservice
 #SERVER_NAME="ps-publicservice"
 #SERVER_IP=$PUBLICSERVICE_INSTALL_IP
 #startApp
-#
-##linkis-cg-linkismanage
+
+#echo "sleeping 15s before start cg-linkismanager, please be patient"
+sleep 15
+
+#linkis-cg-linkismanage
 #SERVER_NAME="cg-linkismanager"
 #SERVER_IP=$MANAGER_INSTALL_IP
 #startApp
-#
-sleep 15
-#
-##linkis-cg-entrance
+
+#echo "sleeping 20s before start cg-entrance, please be patient"
+sleep 20
+
+#linkis-cg-entrance
 #SERVER_NAME="cg-entrance"
 #SERVER_IP=$ENTRANCE_INSTALL_IP
 #startApp
@@ -94,9 +100,9 @@ SERVER_NAME="cg-engineconnmanager"
 SERVER_IP=$ENGINECONNMANAGER_INSTALL_IP
 startApp
 
-echo "start-all shell script executed completely"
+echo "start-ecm shell script executed completely"
 
-echo "Start to check all linkis microservice"
+echo "Start to check ecm linkis microservice"
 
 function checkServer() {
 echo "<-------------------------------->"
@@ -112,41 +118,41 @@ executeCMD $SERVER_IP "$SERVER_CHECK_CMD"
 if [ $? -ne 0 ]; then
       ALL_SERVER_NAME=linkis-$SERVER_NAME
       LOG_PATH=$LINKIS_HOME/logs/$ALL_SERVER_NAME.log
-      echo "ERROR: your $ALL_SERVER_NAME microservice is not start successful !!! ERROR logs as follows :"
-      echo "Please check  detail log, log path :$LOG_PATH"
+      echo "ERROR: your $ALL_SERVER_NAME microservice does not start successful !!! ERROR logs as follows :"
+      echo "Please check detail log, log path :$LOG_PATH"
       echo '<---------------------------------------------------->'
       executeCMD $ALL_SERVER_NAME "tail -n 50 $LOG_PATH"
       echo '<---------------------------------------------------->'
-      echo "Please check  detail log, log path :$LOG_PATH"
+      echo "Please check detail log, log path :$LOG_PATH"
       exit 1
 fi
 echo "<-------------------------------->"
 sleep 3
 }
 
-##linkis-mg-eureka
+#linkis-mg-eureka
 #export SERVER_NAME="mg-eureka"
 #SERVER_IP=$EUREKA_INSTALL_IP
 #checkServer
-#
-#
-##linkis-mg-gateway
+
+
+#linkis-mg-gateway
 #SERVER_NAME="mg-gateway"
 #SERVER_IP=$GATEWAY_INSTALL_IP
 #checkServer
-#
-##linkis-ps-publicservice
+
+#linkis-ps-publicservice
 #SERVER_NAME="ps-publicservice"
 #SERVER_IP=$PUBLICSERVICE_INSTALL_IP
 #checkServer
-#
-##linkis-cg-linkismanager
+
+#linkis-cg-linkismanager
 #SERVER_NAME="cg-linkismanager"
 #SERVER_IP=$MANAGER_INSTALL_IP
 #checkServer
-#
-#
-##linkis-cg-entrance
+
+
+#linkis-cg-entrance
 #SERVER_NAME="cg-entrance"
 #SERVER_IP=$ENTRANCE_INSTALL_IP
 #checkServer
@@ -156,4 +162,4 @@ SERVER_NAME="cg-engineconnmanager"
 SERVER_IP=$ENGINECONNMANAGER_INSTALL_IP
 checkServer
 
-echo "Linkis started successfully"
+echo "Apache Linkis started successfully"

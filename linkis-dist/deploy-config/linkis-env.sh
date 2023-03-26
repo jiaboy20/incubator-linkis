@@ -148,6 +148,7 @@ PUBLICSERVICE_PORT=9105
 
 ## java application default jvm memory
 export SERVER_HEAP_SIZE="512M"
+export LINKIS_LOG_DIR=/var/log/linkis
 
 ##The decompression directory and the installation directory need to be inconsistent
 LINKIS_HOME=/opt/linkis
@@ -155,7 +156,7 @@ LINKIS_HOME=/opt/linkis
 ##The extended lib such mysql-connector-java-*.jar
 #LINKIS_EXTENDED_LIB=/appcom/common/linkisExtendedLib
 
-LINKIS_VERSION=1.3.1
+LINKIS_VERSION=1.3.2
 
 # for install
 LINKIS_PUBLIC_MODULE=lib/linkis-commons/public-module

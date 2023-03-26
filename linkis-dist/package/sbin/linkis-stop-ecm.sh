@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -53,8 +53,8 @@ executeCMD $SERVER_IP "$SERVER_STOP_CMD"
 
 echo "<-------------------------------->"
 }
-#
-##linkis-mg-gateway
+
+#linkis-mg-gateway
 #SERVER_NAME="mg-gateway"
 #SERVER_IP=$GATEWAY_INSTALL_IP
 #stopApp
@@ -63,23 +63,23 @@ echo "<-------------------------------->"
 SERVER_NAME="cg-engineconnmanager"
 SERVER_IP=$ENGINECONNMANAGER_INSTALL_IP
 stopApp
-#
-##linkis-cg-entrance
+
+#linkis-cg-entrance
 #SERVER_NAME="cg-entrance"
 #SERVER_IP=$ENTRANCE_INSTALL_IP
 #stopApp
-#
-##linkis-ps-publicservice
+
+#linkis-ps-publicservice
 #SERVER_NAME="ps-publicservice"
 #SERVER_IP=$PUBLICSERVICE_INSTALL_IP
 #stopApp
-#
-##linkis-cg-linkismanager
+
+#linkis-cg-linkismanager
 #SERVER_NAME="cg-linkismanager"
 #SERVER_IP=$MANAGER_INSTALL_IP
 #stopApp
-#
-##linkis-mg-eureka
+
+#linkis-mg-eureka
 #export SERVER_NAME="mg-eureka"
 #SERVER_IP=$EUREKA_INSTALL_IP
 #stopApp

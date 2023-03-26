@@ -15,11 +15,11 @@
 #
 
 ### Used to store user's custom variables, user's configuration, UDFs and functions, while providing the JobHistory service
-MYSQL_HOST=
-MYSQL_PORT=
-MYSQL_DB=
-MYSQL_USER=
-MYSQL_PASSWORD=
+MYSQL_HOST=10.110.7.18
+MYSQL_PORT=32111
+MYSQL_DB=linkisdb
+MYSQL_USER=linkis
+MYSQL_PASSWORD=linkis@1234
 
 
 ### Provide the DB information of Hive metadata database.
