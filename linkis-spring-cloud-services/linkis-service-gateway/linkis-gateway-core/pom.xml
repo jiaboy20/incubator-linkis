@@ -44,10 +44,12 @@
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-webapp</artifactId>
         </exclusion>
-        <exclusion>
-          <groupId>org.eclipse.jetty.websocket</groupId>
-          <artifactId>websocket-server</artifactId>
-        </exclusion>
+        <!-- delete by jiangkun for gateway启动时报exception on 20230406 Start -->
+        <!--        <exclusion>-->
+        <!--          <groupId>org.eclipse.jetty.websocket</groupId>-->
+        <!--          <artifactId>websocket-server</artifactId>-->
+        <!--        </exclusion>-->
+        <!-- delete by jiangkun for gateway启动时报exception on 20230406 End -->
         <exclusion>
           <groupId>io.netty</groupId>
           <artifactId>netty-all</artifactId>
