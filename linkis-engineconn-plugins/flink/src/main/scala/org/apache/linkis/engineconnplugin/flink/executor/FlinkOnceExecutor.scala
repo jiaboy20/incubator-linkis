@@ -30,11 +30,14 @@ import org.apache.linkis.engineconnplugin.flink.config.FlinkEnvConfiguration.{
   FLINK_ONCE_APP_STATUS_FETCH_FAILED_MAX,
   FLINK_ONCE_APP_STATUS_FETCH_INTERVAL
 }
+import org.apache.linkis.engineconnplugin.flink.config.FlinkExecutionTargetType
 import org.apache.linkis.engineconnplugin.flink.errorcode.FlinkErrorCodeSummary._
 import org.apache.linkis.engineconnplugin.flink.exception.ExecutorInitException
+import org.apache.linkis.engineconnplugin.flink.executor.interceptor.FlinkJobSubmitInterceptor
 import org.apache.linkis.manager.common.entity.enumeration.NodeStatus
 
 import org.apache.flink.api.common.JobStatus
+import org.apache.flink.configuration.DeploymentOptions
 
 import java.util.concurrent.{Future, TimeUnit}
 
@@ -47,6 +50,8 @@ trait FlinkOnceExecutor[T <: ClusterDescriptorAdapter]
   protected var clusterDescriptor: T = _
   private var daemonThread: Future[_] = _
 
+  private var interceptor: FlinkJobSubmitInterceptor = _
+
   protected def submit(onceExecutorExecutionContext: OnceExecutorExecutionContext): Unit = {
     ClusterDescriptorAdapterFactory.create(flinkEngineConnContext.getExecutionContext) match {
       case adapter: T => clusterDescriptor = adapter
@@ -58,16 +63,39 @@ trait FlinkOnceExecutor[T <: ClusterDescriptorAdapter]
       case (k, v) if v != null => k -> v.toString
       case (k, _) => k -> null
     }.toMap
-    doSubmit(onceExecutorExecutionContext, options)
-    if (isCompleted) return
-    if (null == clusterDescriptor.getClusterID) {
-      throw new ExecutorInitException(YARN_IS_NULL.getErrorDesc)
+    Option(interceptor).foreach(op => op.beforeSubmit(onceExecutorExecutionContext))
+    Utils.tryCatch {
+      doSubmit(onceExecutorExecutionContext, options)
+      Option(interceptor).foreach(op => op.afterSubmitSuccess(onceExecutorExecutionContext))
+    } { t: Throwable =>
+      Option(interceptor).foreach(op => op.afterSubmitFail(onceExecutorExecutionContext, t))
+      throw t
     }
-    setApplicationId(clusterDescriptor.getClusterID.toString)
-    setApplicationURL(clusterDescriptor.getWebInterfaceUrl)
-    logger.info(
-      s"Application is started, applicationId: $getApplicationId, applicationURL: $getApplicationURL."
-    )
+    if (isCompleted) return
+
+    val flinkDeploymentTarget =
+      flinkEngineConnContext.getExecutionContext.getFlinkConfig.get(DeploymentOptions.TARGET)
+
+    if (FlinkExecutionTargetType.isYarnExecutionTargetType(flinkDeploymentTarget)) {
+      if (null == clusterDescriptor.getClusterID) {
+        throw new ExecutorInitException(YARN_IS_NULL.getErrorDesc)
+      }
+      setApplicationId(clusterDescriptor.getClusterID.toString)
+      setApplicationURL(clusterDescriptor.getWebInterfaceUrl)
+      logger.info(
+        s"Application is started, applicationId: $getApplicationId, applicationURL: $getApplicationURL."
+      )
+    } else if (FlinkExecutionTargetType.isKubernetesExecutionTargetType(flinkDeploymentTarget)) {
+      if (null == clusterDescriptor.getKubernetesClusterID) {
+        throw new ExecutorInitException(KUBERNETES_IS_NULL.getErrorDesc)
+      }
+      setKubernetesClusterID(clusterDescriptor.getKubernetesClusterID)
+      setApplicationURL(clusterDescriptor.getWebInterfaceUrl)
+      logger.info(
+        s"Application is started, applicationId: $getApplicationId, applicationURL: $getApplicationURL."
+      )
+    }
+
     if (clusterDescriptor.getJobId != null) setJobID(clusterDescriptor.getJobId.toHexString)
   }
 
@@ -81,6 +109,10 @@ trait FlinkOnceExecutor[T <: ClusterDescriptorAdapter]
   val id: Long
 
   def getClusterDescriptorAdapter: T = clusterDescriptor
+
+  def setSubmitInterceptor(interceptor: FlinkJobSubmitInterceptor): Unit = {
+    this.interceptor = interceptor
+  }
 
   override def getId: String = "FlinkOnceApp_" + id
 

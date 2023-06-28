@@ -21,6 +21,13 @@ MYSQL_DB=linkisdb
 MYSQL_USER=linkis
 MYSQL_PASSWORD=linkis@1234
 
+PG_HOST=
+PG_PORT=
+PG_DB=
+PG_SCHEMA=
+PG_USER=
+PG_PASSWORD=
+
 
 ### Provide the DB information of Hive metadata database.
 ### Attention! If there are special characters like "&", they need to be enclosed in quotation marks.
