@@ -50,7 +50,7 @@ object SparkConfiguration extends Logging {
   val SPARK_APP_RESOURCE = CommonVars[String]("spark.app.resource", "")
   val SPARK_APP_CONF = CommonVars[String]("spark.extconf", "")
 
-  val SPARK_K8S_CONFIG_FILE = CommonVars[String]("linkis.spark.k8s.config.file", "")
+  val SPARK_K8S_CONFIG_FILE = CommonVars[String]("linkis.spark.k8s.config.file", "~/.kube/config")
   val SPARK_K8S_SERVICE_ACCOUNT = CommonVars[String]("linkis.spark.k8s.serviceAccount", "")
   val SPARK_K8S_MASTER_URL = CommonVars[String]("linkis.spark.k8s.master.url", "")
   val SPARK_K8S_USERNAME = CommonVars[String]("linkis.spark.k8s.username", "")
@@ -61,6 +61,9 @@ object SparkConfiguration extends Logging {
   val SPARK_K8S_RESTART_POLICY = CommonVars[String]("linkis.spark.k8s.restartPolicy", "Never")
   val SPARK_K8S_SPARK_VERSION = CommonVars[String]("linkis.spark.k8s.sparkVersion", "3.2.1")
   val SPARK_K8S_NAMESPACE = CommonVars[String]("linkis.spark.k8s.namespace", "default")
+
+  val SPARK_KUBERNETES_FILE_UPLOAD_PATH =
+    CommonVars[String]("spark.kubernetes.file.upload.path", "local:///opt/spark/tmp")
 
   val SPARK_PYTHON_VERSION = CommonVars[String]("spark.python.version", "python")
 
@@ -158,6 +161,9 @@ object SparkConfiguration extends Logging {
   val SPARK_ONCE_YARN_RESTFUL_URL = CommonVars[String]("linkis.spark.once.yarn.restful.url", "")
 
   val LINKIS_SPARK_ETL_SUPPORT_HUDI = CommonVars[Boolean]("linkis.spark.etl.support.hudi", false)
+
+  val SCALA_PARSE_APPEND_CODE =
+    CommonVars("linkis.scala.parse.append.code", "val linkisVar=1").getValue
 
   private def getMainJarName(): String = {
     val somePath = ClassUtils.jarOfClass(classOf[SparkEngineConnFactory])
