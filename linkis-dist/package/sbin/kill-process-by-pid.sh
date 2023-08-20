@@ -17,15 +17,23 @@
 cd `dirname $0`
 cd ..
 INSTALL_HOME=`pwd`
+
 # set LINKIS_HOME
 if [ "$LINKIS_HOME" = "" ]; then
   export LINKIS_HOME=$INSTALL_HOME
 fi
+
+# set LINKIS_CONF_DIR
+if [ "$LINKIS_CONF_DIR" = "" ]; then
+  export LINKIS_CONF_DIR=$LINKIS_HOME/conf
+fi
+source $LINKIS_CONF_DIR/linkis-env.sh
+
 if [ "$LINKIS_LOG_DIR" = "" ]; then
   export LINKIS_LOG_DIR="$LINKIS_HOME/logs"
 fi
 ecmPid=`cat $LINKIS_HOME/pid/linkis_cg-engineconnmanager.pid`
-month=`date '+%Y-%m'`
+month=`date '+%Y%m'`
 export killLogFile=$LINKIS_LOG_DIR/linkis-cg-engineconnmanager-kill-$month.log
 
 if [ -f '$killLogFile' ];then
@@ -33,8 +41,8 @@ if [ -f '$killLogFile' ];then
 else
         echo "not exists"
         echo '' >> $killLogFile
-        sudo chown hadoop:hadoop $killLogFile
-        sudo chmod 777 $killLogFile
+        sudo chown root:root $killLogFile
+        sudo chmod 644 $killLogFile
 
 fi
 
