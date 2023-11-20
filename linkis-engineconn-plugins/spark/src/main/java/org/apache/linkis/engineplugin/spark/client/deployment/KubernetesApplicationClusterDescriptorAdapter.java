@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 public class KubernetesApplicationClusterDescriptorAdapter extends ClusterDescriptorAdapter {
   private static final Logger logger =
-      LoggerFactory.getLogger(KubernetesOperatorClusterDescriptorAdapter.class);
+      LoggerFactory.getLogger(KubernetesApplicationClusterDescriptorAdapter.class);
 
   protected SparkConfig sparkConfig;
   protected KubernetesClient client;
@@ -66,12 +66,13 @@ public class KubernetesApplicationClusterDescriptorAdapter extends ClusterDescri
         .setJavaHome(sparkConfig.getJavaHome())
         .setSparkHome(sparkConfig.getSparkHome())
         .setMaster(sparkConfig.getK8sMasterUrl())
-        .setDeployMode(sparkConfig.getDeployMode())
+        .setDeployMode("cluster")
         .setAppName(sparkConfig.getAppName())
         .setVerbose(true);
     this.driverPodName = generateDriverPodName(sparkConfig.getAppName());
     this.namespace = sparkConfig.getK8sNamespace();
     setConf(sparkLauncher, "spark.app.name", sparkConfig.getAppName());
+    setConf(sparkLauncher, "spark.ui.port", sparkConfig.getK8sSparkUIPort());
     setConf(sparkLauncher, "spark.kubernetes.namespace", this.namespace);
     setConf(sparkLauncher, "spark.kubernetes.container.image", sparkConfig.getK8sImage());
     setConf(sparkLauncher, "spark.kubernetes.driver.pod.name", this.driverPodName);
@@ -111,6 +112,7 @@ public class KubernetesApplicationClusterDescriptorAdapter extends ClusterDescri
     addSparkArg(sparkLauncher, "--num-executors", sparkConfig.getNumExecutors().toString());
     addSparkArg(sparkLauncher, "--principal", sparkConfig.getPrincipal());
     addSparkArg(sparkLauncher, "--keytab", sparkConfig.getKeytab());
+    addSparkArg(sparkLauncher, "--py-files", sparkConfig.getPyFiles());
     sparkLauncher.setAppResource(sparkConfig.getAppResource());
     sparkLauncher.setMainClass(mainClass);
     Arrays.stream(args.split("\\s+"))
@@ -164,12 +166,12 @@ public class KubernetesApplicationClusterDescriptorAdapter extends ClusterDescri
     return client.pods().inNamespace(namespace).withName(driverPodName).get();
   }
 
-  public String getSparkDriverPodIP() {
+  public String getSparkUIUrl() {
     Pod sparkDriverPod = getSparkDriverPod();
     if (null != sparkDriverPod) {
       String sparkDriverPodIP = sparkDriverPod.getStatus().getPodIP();
       if (StringUtils.isNotBlank(sparkDriverPodIP)) {
-        return sparkDriverPodIP;
+        return sparkDriverPodIP + ":" + this.sparkConfig.getK8sSparkUIPort();
       } else {
         logger.info("spark driver pod IP is null, the application may be pending");
       }
@@ -194,12 +196,16 @@ public class KubernetesApplicationClusterDescriptorAdapter extends ClusterDescri
   @Override
   public void close() {
     logger.info("Start to close job {}.", getApplicationId());
+    client.close();
+    if (isDisposed()) {
+      logger.info("Job has finished, close action return.");
+      return;
+    }
     PodResource<Pod> sparkDriverPodResource =
         client.pods().inNamespace(namespace).withName(driverPodName);
     if (null != sparkDriverPodResource.get()) {
       sparkDriverPodResource.delete();
     }
-    client.close();
   }
 
   @Override

@@ -27,6 +27,7 @@ import org.apache.linkis.scheduler.executer.Executor
 import org.apache.linkis.scheduler.future.{BDPFuture, BDPFutureTask}
 import org.apache.linkis.scheduler.queue._
 
+import java.util
 import java.util.concurrent.{ExecutorService, Future}
 
 import scala.beans.BeanProperty
@@ -73,6 +74,8 @@ class FIFOUserConsumer(
   override def getRunningEvents: Array[SchedulerEvent] =
     getEvents(e => e.isRunning || e.isWaitForRetry)
 
+  protected def getSchedulerContext: SchedulerContext = schedulerContext
+
   private def getEvents(op: SchedulerEvent => Boolean): Array[SchedulerEvent] = {
     val result = ArrayBuffer[SchedulerEvent]()
     runningJobs.filter(_ != null).filter(x => op(x)).foreach(result += _)
@@ -82,16 +85,28 @@ class FIFOUserConsumer(
   override def run(): Unit = {
     Thread.currentThread().setName(s"${toString}Thread")
     logger.info(s"$toString thread started!")
-    while (!terminate) {
-      Utils.tryAndError(loop())
-      Utils.tryAndError(Thread.sleep(10))
+    while (!terminate) Utils.tryAndError {
+      loop()
+      Thread.sleep(10)
     }
     logger.info(s"$toString thread stopped!")
   }
 
   protected def askExecutorGap(): Unit = {}
 
+  /**
+   * Task scheduling interception is used to judge the rules of task operation, and to judge other
+   * task rules based on Group. For example, Entrance makes Creator-level task judgment.
+   */
+  protected def runScheduleIntercept(): Boolean = {
+    true
+  }
+
   protected def loop(): Unit = {
+    if (!runScheduleIntercept()) {
+      Utils.tryQuietly(Thread.sleep(1000))
+      return
+    }
     var isRetryJob = false
     def getWaitForRetryEvent: Option[SchedulerEvent] = {
       val waitForRetryJobs = runningJobs.filter(job => job != null && job.isJobCanRetry)
@@ -108,8 +123,9 @@ class FIFOUserConsumer(
     }
     var event: Option[SchedulerEvent] = getWaitForRetryEvent
     if (event.isEmpty) {
-      val completedNums = runningJobs.filter(job => job == null || job.isCompleted)
-      if (completedNums.length < 1) {
+      val maxAllowRunningJobs = fifoGroup.getMaxAllowRunningJobs
+      val currentRunningJobs = runningJobs.count(e => e != null && !e.isCompleted)
+      if (maxAllowRunningJobs <= currentRunningJobs) {
         Utils.tryQuietly(Thread.sleep(1000)) // TODO 还可以优化，通过实现JobListener进行优化
         return
       }
@@ -119,7 +135,12 @@ class FIFOUserConsumer(
           if (
               takeEvent.exists(e =>
                 Utils.tryCatch(e.turnToScheduled()) { t =>
-                  takeEvent.get.asInstanceOf[Job].onFailure("Job状态翻转为Scheduled失败！", t)
+                  takeEvent.get
+                    .asInstanceOf[Job]
+                    .onFailure(
+                      "Failed to change the job status to Scheduled(Job状态翻转为Scheduled失败)",
+                      t
+                    )
                   false
                 }
               )
@@ -174,7 +195,7 @@ class FIFOUserConsumer(
             )
           )
         case error: Throwable =>
-          job.onFailure("请求引擎失败，可能是由于后台进程错误!请联系管理员", error)
+          job.onFailure("Failed to request EngineConn", error)
           if (job.isWaitForRetry) {
             logger.warn(s"Ask executor for Job $job failed, wait for the next retry!", error)
             if (!isRetryJob) putToRunningJobs(job)
@@ -188,8 +209,35 @@ class FIFOUserConsumer(
     runningJobs(index) = job
   }
 
+  protected def scanAllRetryJobsAndRemove(): util.List[Job] = {
+    val jobs = new util.ArrayList[Job]()
+    for (index <- runningJobs.indices) {
+      val job = runningJobs(index)
+      if (job != null && job.isJobCanRetry) {
+        jobs.add(job)
+        runningJobs(index) = null
+        logger.info(s"Job $job can retry, remove from runningJobs")
+      }
+    }
+    jobs
+  }
+
   override def shutdown(): Unit = {
     future.cancel(true)
+    val waitEvents = queue.getWaitingEvents
+    if (waitEvents.nonEmpty) {
+      waitEvents.foreach {
+        case job: Job =>
+          job.onFailure("Your job will be marked as canceled because the consumer be killed", null)
+        case _ =>
+      }
+    }
+
+    this.runningJobs.foreach { job =>
+      if (job != null && !job.isCompleted) {
+        job.onFailure("Your job will be marked as canceled because the consumer be killed", null)
+      }
+    }
     super.shutdown()
   }
 
