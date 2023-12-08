@@ -19,7 +19,7 @@ workDir=`cd ${shellDir}/..;pwd`
 source ${workDir}/bin/common.sh
 source ${workDir}/deploy-config/linkis-env.sh
 source ${workDir}/deploy-config/db.sh
-source
+source ~/.bash_profile
 say() {
     printf 'check command fail \n %s\n' "$1"
 }
@@ -203,8 +203,10 @@ echo -e "\n<-----End to check service status---->"
 # --- check Service Port
 echo -e "\n3. <-----Start to check service Port---->"
 
-SERVER_PORT=$EUREKA_PORT
-check_service_port
+if [ "$DISCOVERY" == "EUREKA" ]; then
+  SERVER_PORT=$EUREKA_PORT
+  check_service_port
+fi
 
 SERVER_PORT=$GATEWAY_PORT
 check_service_port
