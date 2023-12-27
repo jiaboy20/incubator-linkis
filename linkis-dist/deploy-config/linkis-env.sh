@@ -167,7 +167,7 @@ LINKIS_HOME=/opt/linkis
 ##The extended lib such mysql-connector-java-*.jar
 #LINKIS_EXTENDED_LIB=/appcom/common/linkisExtendedLib
 
-LINKIS_VERSION=1.4.0
+LINKIS_VERSION=1.5.0
 
 # for install
 LINKIS_PUBLIC_MODULE=lib/linkis-commons/public-module
