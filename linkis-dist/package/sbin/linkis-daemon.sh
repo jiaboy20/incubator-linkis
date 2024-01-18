@@ -223,6 +223,9 @@ case $SERVER_NAME in
   "ps-publicservice"|"linkis-ps-publicservice"|"publicservice")
     export SERVER_NAME="ps-publicservice"
     ;;
+  "et-monitor"|"linkis-et-monitor"|"monitor")
+    export SERVER_NAME="et-monitor"
+    ;;
   *)
     ;;
 esac

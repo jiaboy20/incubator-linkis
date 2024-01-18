@@ -23,14 +23,15 @@ server:
 
 eureka:
   instance:
-    # prefer-ip-address: true
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
     hostname: ${spring.cloud.client.ip-address}
     metadata-map:
       prometheus.path: ${prometheus.path:/actuator/prometheus}
       linkis.app.version: ${linkis.app.version}
   client:
     serviceUrl:
-      defaultZone: http://bigd-sit-linkis-mgr1:8761/eureka/,http://bigd-sit-linkis-mgr2:8761/eureka/
+      defaultZone: http://10.110.3.206:8761/eureka/
   server:
     enable-self-preservation: false
     eviction-interval-timer-in-ms: 5000

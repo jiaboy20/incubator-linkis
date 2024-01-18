@@ -758,7 +758,9 @@ INSERT INTO `linkis_ps_dm_datasource_env` (`env_name`, `env_desc`, `datasource_t
 # INSERT INTO `linkis_ps_dm_datasource_env` (`env_name`, `env_desc`, `datasource_type_id`, `parameter`, `create_time`, `create_user`, `modify_time`, `modify_user`) VALUES ('测试环境UAT', '测试环境UAT', @data_source_type_id, '{"uris":"thrift://localhost:9083", "hadoopConf":{"hive.metastore.execute.setugi":"true"}}',  now(), NULL,  now(), NULL);
 
 select @data_source_type_id := id from `linkis_ps_dm_datasource_type` where `name` = 'kafka';
-INSERT INTO `linkis_ps_dm_datasource_env` (`env_name`, `env_desc`, `datasource_type_id`, `parameter`, `create_time`, `create_user`, `modify_time`, `modify_user`) VALUES ('kafka测试环境SIT', '开源测试环境SIT', @data_source_type_id, '{"uris":"thrift://localhost:9092"}',  now(), NULL,  now(), NULL);
+INSERT INTO `linkis_ps_dm_datasource_type_key`
+    (`data_source_type_id`, `key`, `name`, `name_en`, `default_value`, `value_type`, `scope`, `require`, `description`, `description_en`, `value_regex`, `ref_id`, `ref_value`, `data_source`, `update_time`, `create_time`)
+VALUES (@data_source_type_id, 'brokers', 'Kafka集群(Broker List)', 'Broker List', NULL, 'TEXT', NULL, 1, '地址(host1:port1,host2:port2...)', 'Address(host1:port1,host2:port2...)', NULL, NULL, NULL, NULL,  now(), now());
 
 select @data_source_type_id := id from `linkis_ps_dm_datasource_type` where `name` = 'tidb';
 INSERT INTO `linkis_ps_dm_datasource_type_key`

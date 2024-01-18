@@ -150,6 +150,11 @@ ENTRANCE_PORT=9104
 PUBLICSERVICE_PORT=9105
 #PUBLICSERVICE_HEAP_SIZE="512M"
 
+##linkis-et-monitor
+#MONITOR_INSTALL_IP=127.0.0.1
+MONITOR_PORT=9103
+#MONITOR_HEAP_SIZE="512M"
+
 ########################################################################################
 
 ## LDAP is for enterprise authorization, if you just want to have a try, ignore it.
@@ -165,7 +170,7 @@ export LINKIS_LOG_DIR=/var/log/linkis
 LINKIS_HOME=/opt/linkis
 
 ##The extended lib such mysql-connector-java-*.jar
-#LINKIS_EXTENDED_LIB=/appcom/common/linkisExtendedLib
+LINKIS_EXTENDED_LIB=lib/linkis-extensions
 
 LINKIS_VERSION=1.5.0
 

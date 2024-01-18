@@ -77,6 +77,11 @@ echo "<-------------------------------->"
 #ec
 stopEC
 
+#linkis-et-monitor
+SERVER_NAME="et-monitor"
+SERVER_IP=$MONITOR_INSTALL_IP
+stopApp
+
 #linkis-mg-gateway
 SERVER_NAME="mg-gateway"
 SERVER_IP=$GATEWAY_INSTALL_IP
