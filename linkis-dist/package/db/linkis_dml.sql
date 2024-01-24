@@ -390,7 +390,7 @@ INNER JOIN linkis_cg_manager_label label ON relation.engine_type_label_id = labe
 
 
 insert  into `linkis_cg_rm_external_resource_provider`(`id`,`resource_type`,`name`,`labels`,`config`) values
-(1,'Yarn','default',NULL,'{\r\n\"rmWebAddress\": \"http://bigd-cdh-a-dev-03:8088/\",\r\n\"hadoopVersion\": \"3.0.0\",\r\n\"authorEnable\":false,\r\n\"user\":\"\",\r\n\"pwd\":\"\",\r\n\"kerberosEnable\":false,\r\n\"principalName\":\"\",\r\n\"keytabPath\":\"\",\r\n\"krb5Path\":\"\"\r\n}');
+(1,'Yarn','default',NULL,'{\r\n\"rmWebAddress\": \"http://bigd-cdh-a-dev-02:8088/;http://bigd-cdh-a-dev-04:8088/\",\r\n\"hadoopVersion\": \"3.0.0\",\r\n\"authorEnable\":false,\r\n\"user\":\"\",\r\n\"pwd\":\"\",\r\n\"kerberosEnable\":false,\r\n\"principalName\":\"\",\r\n\"keytabPath\":\"\",\r\n\"krb5Path\":\"\"\r\n}');
 
 -- errorcode
 -- 01 linkis server
