@@ -128,15 +128,15 @@
         </fileSet>
 
         <!--python-->
-        <fileSet>
-            <directory>
-                ../linkis-engineconn-plugins/python/target/out/
-            </directory>
-            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>-->
+<!--                ../linkis-engineconn-plugins/python/target/out/-->
+<!--            </directory>-->
+<!--            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>-->
+<!--            <includes>-->
+<!--                <include>**/*</include>-->
+<!--            </includes>-->
+<!--        </fileSet>-->
 
         <!--shell-->
         <fileSet>
@@ -194,37 +194,37 @@
         </fileSet>
 
         <!-- sqoop -->
-        <fileSet>
-            <directory>
-                ../linkis-engineconn-plugins/sqoop/target/out/
-            </directory>
-            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>-->
+<!--                ../linkis-engineconn-plugins/sqoop/target/out/-->
+<!--            </directory>-->
+<!--            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>-->
+<!--            <includes>-->
+<!--                <include>**/*</include>-->
+<!--            </includes>-->
+<!--        </fileSet>-->
 
         <!--seatunnel -->
-        <fileSet>
-            <directory>
-                ../linkis-engineconn-plugins/seatunnel/target/out/
-            </directory>
-            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>-->
+<!--                ../linkis-engineconn-plugins/seatunnel/target/out/-->
+<!--            </directory>-->
+<!--            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>-->
+<!--            <includes>-->
+<!--                <include>**/*</include>-->
+<!--            </includes>-->
+<!--        </fileSet>-->
 
         <!--elasticsearch -->
-        <fileSet>
-            <directory>
-                ../linkis-engineconn-plugins/elasticsearch/target/out/
-            </directory>
-            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>-->
+<!--                ../linkis-engineconn-plugins/elasticsearch/target/out/-->
+<!--            </directory>-->
+<!--            <outputDirectory>linkis-package/lib/linkis-engineconn-plugins/</outputDirectory>-->
+<!--            <includes>-->
+<!--                <include>**/*</include>-->
+<!--            </includes>-->
+<!--        </fileSet>-->
 
         <!--lib-->
         <!--linkis-spring-cloud-services-->

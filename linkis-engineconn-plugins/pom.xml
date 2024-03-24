@@ -29,22 +29,22 @@
   <modules>
     <module>hive</module>
     <module>spark</module>
-    <module>python</module>
-    <module>openlookeng</module>
+    <!--    <module>python</module>-->
+    <!--    <module>openlookeng</module>-->
     <module>io_file</module>
     <module>shell</module>
     <module>pipeline</module>
     <module>jdbc</module>
     <module>flink</module>
-    <module>sqoop</module>
-    <module>presto</module>
-    <module>trino</module>
-    <module>elasticsearch</module>
-    <module>seatunnel</module>
-    <module>hbase</module>
-    <module>nebula</module>
-    <module>doris</module>
-    <module>repl</module>
+    <!--    <module>sqoop</module>-->
+    <!--    <module>presto</module>-->
+    <!--    <module>trino</module>-->
+    <!--    <module>elasticsearch</module>-->
+    <!--    <module>seatunnel</module>-->
+    <!--    <module>hbase</module>-->
+    <!--    <module>nebula</module>-->
+    <!--    <module>doris</module>-->
+    <!--    <module>repl</module>-->
   </modules>
   <profiles>
     <profile>
