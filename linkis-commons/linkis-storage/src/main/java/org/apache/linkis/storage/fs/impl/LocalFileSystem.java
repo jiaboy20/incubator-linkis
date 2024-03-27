@@ -377,15 +377,30 @@ public class LocalFileSystem extends FileSystem {
   public boolean create(String dest) throws IOException {
     LOG.info("try to create file with path:" + dest);
     File file = new File(dest);
-    if (!isOwner(file.getParent())) {
+    // modify by jiangkun0928 for DEBUG on 20240325 start
+    //    if (!isOwner(file.getParent())) {
+    if (!FsPath.WINDOWS && !isOwner(file.getParent())) {
+      // modify by jiangkun0928 for DEBUG on 20240325 end
       throw new IOException("you have on permission to create file " + dest);
     }
-    file.createNewFile();
+    // delete by jiangkun0928 for DEBUG on 20240325 start
+    //    file.createNewFile();
+    // delete by jiangkun0928 for DEBUG on 20240325 end
     try {
-      setPermission(new FsPath(dest), this.getDefaultFilePerm());
-      if (!user.equals(getOwner(dest))) {
-        setOwner(new FsPath(dest), user, null);
+      // modify by jiangkun0928 for DEBUG on 20240325 start
+      //      setPermission(new FsPath(dest), this.getDefaultFilePerm());
+      //      if (!user.equals(getOwner(dest))) {
+      //        setOwner(new FsPath(dest), user, null);
+      //      }
+      boolean created = file.createNewFile();
+      if (created && !FsPath.WINDOWS) {
+        setPermission(new FsPath(dest), this.getDefaultFilePerm());
+        if (!user.equals(getOwner(dest))) {
+          setOwner(new FsPath(dest), user, null);
+        }
       }
+      return created;
+      // modify by jiangkun0928 for DEBUG on 20240325 end
     } catch (Throwable e) {
       file.delete();
       if (e instanceof IOException) {
@@ -394,7 +409,9 @@ public class LocalFileSystem extends FileSystem {
         throw new IOException(e);
       }
     }
-    return true;
+    // delete by jiangkun0928 for DEBUG on 20240325 start
+    //    return true;
+    // delete by jiangkun0928 for DEBUG on 20240325 end
   }
 
   @Override
